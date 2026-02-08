@@ -1,23 +1,11 @@
-package edu.comillas.icai.gitt.pat.spring.mvc;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.util.Collection;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
-
 @RestController
 @RequestMapping("/api/carrito")
 public class CarritoControlador {
 
-    // Creamos un HashMap cuya clave es el id del carrito y el valor es el objeto Carrito
     private final Map<Long, Carrito> carritos = new ConcurrentHashMap<>();
 
     // CREATE
-    @PostMapping("/api/carrito")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Carrito crea(@RequestBody Carrito carritoNuevo) {
         if (carritos.containsKey(carritoNuevo.idCarrito())) {
@@ -27,8 +15,8 @@ public class CarritoControlador {
         return carritoNuevo;
     }
 
-    // READ
-    @GetMapping("/api/carrito/{idCarrito}")
+    // READ (por id)
+    @GetMapping("/{idCarrito}")
     public Carrito buscar(@PathVariable long idCarrito) {
         Carrito carrito = carritos.get(idCarrito);
         if (carrito == null) {
@@ -37,15 +25,16 @@ public class CarritoControlador {
         return carrito;
     }
 
-    // READ
-    @GetMapping("/api/carrito")
+    // READ (todos)
+    @GetMapping
     public Collection<Carrito> listar() {
         return carritos.values();
     }
 
     // UPDATE
-    @PutMapping("/api/carrito/{idCarrito}")
-    public Carrito actualiza(@PathVariable long idCarrito, @RequestBody Carrito carritoActualizado) {
+    @PutMapping("/{idCarrito}")
+    public Carrito actualiza(@PathVariable long idCarrito,
+                             @RequestBody Carrito carritoActualizado) {
         if (!carritos.containsKey(idCarrito)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
@@ -57,7 +46,7 @@ public class CarritoControlador {
     }
 
     // DELETE
-    @DeleteMapping("/api/carrito/{idCarrito}")
+    @DeleteMapping("/{idCarrito}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void borra(@PathVariable long idCarrito) {
         if (carritos.remove(idCarrito) == null) {
