@@ -14,8 +14,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class CarritoControlador {
 
     // Creamos un HashMap cuya clave es el id del carrito y el valor es el objeto Carrito
-    private final Map<Long, Carrito> baseDeDatos = new ConcurrentHashMap<>();
-
     private final Map<Long, Carrito> carritos = new ConcurrentHashMap<>();
 
     // CREATE
